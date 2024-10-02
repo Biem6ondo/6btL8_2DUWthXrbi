@@ -1002,14 +1002,13 @@ end,
 end,
 
 ["deletehycmds"] = function()
-    local playerGui = game.Players.LocalPlayer:FindFirstChildOfClass("CoreGui")
-    if playerGui then
-        for _, gui in ipairs(playerGui:GetChildren()) do
-            if gui.Name == "HyCMDs" then
-                gui:Destroy()
-            end
-        end
+local coreGui = game:GetService("CoreGui")
+
+for _, gui in pairs(coreGui:GetChildren()) do
+    if gui:IsA("ScreenGui") and gui.Name:find("HyCMDs") then
+        gui:Destroy()
     end
+end
 end,
 
 ["btools"] = function()
