@@ -1,3 +1,28 @@
+-- Not abridged
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local function findAndTransferGui()
+    local player = Players.LocalPlayer
+    local playerGui = player:FindFirstChild("PlayerGui")
+
+    if playerGui then
+        local hyCMDsGui = playerGui:FindFirstChild("HyCMDs")
+        if hyCMDsGui then
+            hyCMDsGui.Parent = game:GetService("CoreGui")
+
+            for _, element in pairs(hyCMDsGui:GetDescendants()) do
+                if element:IsA("TextBox") or element:IsA("TextButton") then
+                    element.BackgroundTransparency = 0.27
+                    element.TextTransparency = 0.27
+                end
+            end
+        end
+    end
+end
+
+RunService.RenderStepped:Connect(findAndTransferGui)
+
 -- Sorry
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MyGUI"
@@ -977,7 +1002,7 @@ end,
 end,
 
 ["deletehycmds"] = function()
-    local playerGui = game.Players.LocalPlayer:FindFirstChildOfClass("PlayerGui")
+    local playerGui = game.Players.LocalPlayer:FindFirstChildOfClass("CoreGui")
     if playerGui then
         for _, gui in ipairs(playerGui:GetChildren()) do
             if gui.Name == "HyCMDs" then
@@ -4068,6 +4093,98 @@ end,
 
 ["fpscap"] = function(value)
     setfpscap(tonumber(value))
+end,
+
+["guicolor"] = function(colorname)
+    local colors = {
+        red = Color3.fromRGB(255, 0, 0),
+        green = Color3.fromRGB(0, 255, 0),
+        blue = Color3.fromRGB(0, 0, 255),
+        yellow = Color3.fromRGB(255, 255, 0),
+        cyan = Color3.fromRGB(0, 255, 255),
+        magenta = Color3.fromRGB(255, 0, 255),
+        black = Color3.fromRGB(0, 0, 0),
+        white = Color3.fromRGB(255, 255, 255),
+        orange = Color3.fromRGB(255, 165, 0),
+        purple = Color3.fromRGB(128, 0, 128),
+        pink = Color3.fromRGB(255, 192, 203),
+        brown = Color3.fromRGB(165, 42, 42),
+        gray = Color3.fromRGB(128, 128, 128),
+        lightgray = Color3.fromRGB(211, 211, 211),
+        darkgray = Color3.fromRGB(169, 169, 169),
+        lightblue = Color3.fromRGB(173, 216, 230),
+        darkblue = Color3.fromRGB(0, 0, 139),
+        lightgreen = Color3.fromRGB(144, 238, 144),
+        darkgreen = Color3.fromRGB(0, 100, 0),
+        gold = Color3.fromRGB(255, 215, 0),
+    }
+
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local PlayerGui = player:WaitForChild("PlayerGui")
+    local CoreGui = game:GetService("CoreGui")
+
+    local color = colors[colorname]
+
+    if color then
+        for _, gui in pairs(CoreGui:GetDescendants()) do
+            if gui:IsA("GuiObject") then
+                gui.BackgroundColor3 = color
+            end
+        end
+
+        for _, gui in pairs(PlayerGui:GetDescendants()) do
+            if gui:IsA("GuiObject") and gui.Name ~= "HyCMDs" then
+                gui.BackgroundColor3 = color
+            end
+        end
+    end
+end,
+
+["textcolor"] = function(colorname)
+    local colors = {
+        red = Color3.fromRGB(255, 0, 0),
+        green = Color3.fromRGB(0, 255, 0),
+        blue = Color3.fromRGB(0, 0, 255),
+        yellow = Color3.fromRGB(255, 255, 0),
+        cyan = Color3.fromRGB(0, 255, 255),
+        magenta = Color3.fromRGB(255, 0, 255),
+        black = Color3.fromRGB(0, 0, 0),
+        white = Color3.fromRGB(255, 255, 255),
+        orange = Color3.fromRGB(255, 165, 0),
+        purple = Color3.fromRGB(128, 0, 128),
+        pink = Color3.fromRGB(255, 192, 203),
+        brown = Color3.fromRGB(165, 42, 42),
+        gray = Color3.fromRGB(128, 128, 128),
+        lightgray = Color3.fromRGB(211, 211, 211),
+        darkgray = Color3.fromRGB(169, 169, 169),
+        lightblue = Color3.fromRGB(173, 216, 230),
+        darkblue = Color3.fromRGB(0, 0, 139),
+        lightgreen = Color3.fromRGB(144, 238, 144),
+        darkgreen = Color3.fromRGB(0, 100, 0),
+        gold = Color3.fromRGB(255, 215, 0),
+    }
+
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local PlayerGui = player:WaitForChild("PlayerGui")
+    local CoreGui = game:GetService("CoreGui")
+
+    local color = colors[colorname]
+
+    if color then
+        for _, gui in pairs(CoreGui:GetDescendants()) do
+            if gui:IsA("TextLabel") or gui:IsA("TextButton") then
+                gui.TextColor3 = color
+            end
+        end
+
+        for _, gui in pairs(PlayerGui:GetDescendants()) do
+            if gui:IsA("TextLabel") or gui:IsA("TextButton") and gui.Name ~= "HyCMDs" then
+                gui.TextColor3 = color
+            end
+        end
+    end
 end,
 }
 
