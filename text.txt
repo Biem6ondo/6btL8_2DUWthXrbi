@@ -4032,6 +4032,43 @@ Frame.AncestryChanged:Connect(function()
     end
 end)
 end,
+
+["runemote"] = function(id)
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+    
+    if humanoid then
+        humanoid:LoadAnimation(Instance.new("Animation", {
+            AnimationId = "rbxassetid://"..id
+        })):Play()
+    end
+end,
+
+["guisize"] = function(size)
+    local function scaleGuiElements(gui)
+        for _, element in pairs(gui:GetDescendants()) do
+            if element:IsA("GuiObject") then
+                element.Size = UDim2.new(element.Size.X.Scale, element.Size.X.Offset + size, element.Size.Y.Scale, element.Size.Y.Offset + size)
+            end
+        end
+    end
+
+    local CoreGui = game:GetService("CoreGui")
+    scaleGuiElements(CoreGui)
+
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local PlayerGui = player:WaitForChild("PlayerGui")
+    scaleGuiElements(PlayerGui)
+
+    local StarterGui = game:GetService("StarterGui")
+    scaleGuiElements(StarterGui)
+end,
+
+["fpscap"] = function(value)
+    setfpscap(tonumber(value))
+end,
 }
 
 -- End Command!
