@@ -667,17 +667,6 @@ end,
     end
 end,
 
-["godmode"] = function()
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.MaxHealth = math.huge
-            humanoid.Health = math.huge
-        end
-    end
-end,
-
 ["deleteplayers"] = function()
     local playerFolder = game.Players.LocalPlayer
     if playerFolder then
@@ -738,36 +727,10 @@ end,
     end
 end,
 
-["health"] = function(value)
-    local player = Players.LocalPlayer
-    if player and player.Character then
-        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.Health = tonumber(value) or humanoid.Health
-        end
-    end
-end,
-
 ["fog"] = function(value)
     local lighting = game:GetService("Lighting")
     local newFogEnd = tonumber(value) or 1000
     lighting.FogEnd = newFogEnd
-end,
-
-["autoheal"] = function(healRate)
-    healRate = tonumber(healRate) or 10
-    local player = game.Players.LocalPlayer
-    if player and player.Character then
-        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            while true do
-                if humanoid.Health < humanoid.MaxHealth then
-                    humanoid.Health = math.min(humanoid.Health + healRate, humanoid.MaxHealth)
-                end
-                wait(0.0001)
-            end
-        end
-    end
 end,
 
 ["freecam"] = function()
@@ -810,47 +773,6 @@ end,
     if character then
         for _,anim in pairs(character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks()) do
             anim:Stop()
-        end
-    end
-end,
-
-["healspeed"] = function(value)
-    local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.Health = humanoid.Health + value
-    end
-end,
-
-["maxhealth"] = function(value)
-    local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.MaxHealth = value
-        humanoid.Health = math.min(humanoid.Health, value)
-    end
-end,
-
-["autohealthloss"] = function(value)
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    
-    if humanoid then
-        while true do
-            wait(0.1)
-            humanoid.Health = humanoid.Health - value
-        end
-    end
-end,
-
-["atl"] = function(value)
-
-    local character = player.Character
-    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    
-    if humanoid then
-        while true do
-            wait(0.1)
-            humanoid.Health = humanoid.Health - value
         end
     end
 end,
@@ -1516,92 +1438,6 @@ end,
     end
 end,
 
-["worldrgb"] = function(speed)
-    local player = game.Players.LocalPlayer
-    local runService = game:GetService("RunService")
-    local colorIndex = 0
-    local colors = {
-        Color3.fromRGB(255, 0, 0),   -- Đỏ
-        Color3.fromRGB(255, 165, 0), -- Cam
-        Color3.fromRGB(255, 255, 0), -- Vàng
-        Color3.fromRGB(0, 255, 0),   -- Xanh lá
-        Color3.fromRGB(0, 0, 255),   -- Xanh dương
-        Color3.fromRGB(75, 0, 130),  -- Chàm
-        Color3.fromRGB(238, 130, 238) -- Tím
-    }
-
-    local function changeColor()
-        colorIndex = (colorIndex % #colors) + 1
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Color = colors[colorIndex]
-            end
-        end
-    end
-
-    player:SetAttribute("WorldRGBActive", true)
-
-    runService:BindToRenderStep("WorldRGB", 0, function()
-        if player:GetAttribute("WorldRGBActive") then
-            changeColor()
-            wait(speed)
-        else
-            runService:UnbindFromRenderStep("WorldRGB")
-        end
-    end)
-end,
-
-["unworldrgb"] = function()
-    local player = game.Players.LocalPlayer
-    player:SetAttribute("WorldRGBActive", false)
-
-    -- Đặt lại màu mặc định cho tất cả các part trong workspace
-    for _, part in pairs(workspace:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.Color = part.BrickColor.Color
-        end
-    end
-end,
-
-["unesp"] = function()
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        if player.Character then
-            for _, child in ipairs(player.Character:GetChildren()) do
-                if child:IsA("Highlight") then
-                    child:Destroy()
-                end
-            end
-        end
-    end
-    
-    print("ESP disabled.")
-end,
-
-["esp"] = function()
-    local function createESP(player)
-        local highlight = Instance.new("Highlight")
-        highlight.Adornee = player.Character
-        highlight.FillTransparency = 1
-        highlight.OutlineColor = Color3.fromRGB(255, 0, 0)  -- Màu viền (đỏ)
-        highlight.Parent = player.Character
-    end
-
-    -- Áp dụng ESP cho tất cả các người chơi hiện tại
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        if player ~= game.Players.LocalPlayer and player.Character then
-            createESP(player)
-        end
-    end
-
-    game.Players.PlayerAdded:Connect(function(player)
-        player.CharacterAdded:Connect(function()
-            createESP(player)
-        end)
-    end)
-    
-    print("ESP enabled.")
-end,
-
 ["disable"] = function(feature)
     local coreGui = game:GetService("StarterGui")
 
@@ -1644,179 +1480,6 @@ end,
     end
 
     print(feature .. " enabled.")
-end,
-
-["kill"] = function(target)
-    local players = game:GetService("Players")
-
-    local function killPlayer(player)
-        if player and player.Character and player.Character:FindFirstChild("Humanoid") then
-            player.Character.Humanoid.Health = 0
-        end
-    end
-
-    if target == "all" then
-        for _, player in ipairs(players:GetPlayers()) do
-            killPlayer(player)
-        end
-    elseif target == "me" then
-        killPlayer(players.LocalPlayer)
-    elseif target == "team" then
-        local team = players.LocalPlayer.Team
-        for _, player in ipairs(players:GetPlayers()) do
-            if player.Team == team then
-                killPlayer(player)
-            end
-        end
-    elseif target == "friend" then
-        for _, player in ipairs(players:GetPlayers()) do
-            if player:IsFriendsWith(players.LocalPlayer.UserId) then
-                killPlayer(player)
-            end
-        end
-    else
-        for _, player in ipairs(players:GetPlayers()) do
-            if player.Name:lower():find(target:lower()) or player.DisplayName:lower():find(target:lower()) then
-                killPlayer(player)
-            end
-        end
-    end
-
-    print("Executed kill command on target: " .. target)
-end,
-
-["execute"] = function(script)
-    -- Phân tách các lệnh bằng ký tự xuống dòng hoặc dấu #1s
-    local commands = string.split(script, "#1s")
-
-    for _, cmd in ipairs(commands) do
-        if cmd ~= "" then
-            local success, err = pcall(function()
-                -- Thực thi từng lệnh
-                loadstring(cmd)()
-            end)
-            if not success then
-                print("Lỗi khi thực thi lệnh: " .. err)
-            end
-
-            -- Nếu có dấu #1s, chờ 1 giây trước khi thực thi lệnh tiếp theo
-            wait(0)
-        end
-    end
-end,
-
-["delete"] = function(itemName)
-    -- Hàm đệ quy để tìm và xóa phần tử trong toàn bộ cây thư mục
-    local function deleteItemRecursively(folder, name, path)
-        for _, item in pairs(folder:GetChildren()) do
-            local currentPath = path .. " > " .. item.Name
-            
-            if item.Name:lower() == name:lower() then
-                item:Destroy()
-                print("Deleted: " .. currentPath)
-                return true
-            end
-
-            -- Nếu item là một folder hoặc object chứa con, tìm trong folder con
-            if item:IsA("Folder") or item:IsA("Model") or item:IsA("ScreenGui") or item:IsA("Frame") or item:IsA("Tool") then
-                local success = deleteItemRecursively(item, name, currentPath)
-                if success then return true end
-            end
-        end
-        return false
-    end
-
-    -- Tìm và xóa phần tử trong Workspace, Players, Lighting, etc.
-    local success = deleteItemRecursively(workspace, itemName, "Workspace")
-    if not success then
-        success = deleteItemRecursively(game.Players, itemName, "Players")
-    end
-    if not success then
-        success = deleteItemRecursively(game.Lighting, itemName, "Lighting")
-    end
-    if not success then
-        success = deleteItemRecursively(game.ReplicatedStorage, itemName, "ReplicatedStorage")
-    end
-    if not success then
-        success = deleteItemRecursively(game.ServerStorage, itemName, "ServerStorage")
-    end
-    if not success then
-        print("Could not find: " .. itemName .. " in the entire game.")
-    end
-end,
-
-["walk"] = function(params)
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
-    local hrp = character:WaitForChild("HumanoidRootPart")
-
-    -- Hàm di chuyển theo hướng
-    local function walkInDirection(direction, studs)
-        local moveVector = Vector3.new(0, 0, 0)
-        
-        if direction == "up" then
-            moveVector = hrp.CFrame.lookVector * studs
-        elseif direction == "down" then
-            moveVector = -hrp.CFrame.lookVector * studs
-        elseif direction == "left" then
-            moveVector = -hrp.CFrame.rightVector * studs
-        elseif direction == "right" then
-            moveVector = hrp.CFrame.rightVector * studs
-        end
-        
-        -- Tính toán vị trí mới
-        local newPosition = hrp.Position + moveVector
-        humanoid:MoveTo(newPosition)
-        humanoid.MoveToFinished:Wait() -- Chờ di chuyển hoàn thành
-    end
-
-    -- Phân tích cú pháp đầu vào
-    for command in string.gmatch(params, "%w+:%d+") do
-        local direction, studs = string.match(command, "(%w+):(%d+)")
-        studs = tonumber(studs)
-        if direction and studs then
-            walkInDirection(direction:lower(), studs)
-        end
-    end
-
-    -- In thông báo sau khi hoàn thành
-    print("Done!")
-end,
-
-["owner"] = function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
-    local hrp = character:WaitForChild("HumanoidRootPart")
-
-    -- Bán kính mà hitbox sẽ mở rộng
-    local radius = 500
-
-    -- Tạo một Collider giả quanh nhân vật để mở rộng hitbox
-    local function createHitbox()
-        local hitbox = Instance.new("Part")
-        hitbox.Name = "Hitbox"
-        hitbox.Size = Vector3.new(radius * 2, radius * 2, radius * 2) -- Tạo hitbox lớn hơn
-        hitbox.Position = hrp.Position
-        hitbox.Anchored = true
-        hitbox.CanCollide = false -- Đảm bảo không gây va chạm với các vật thể khác
-        hitbox.Transparency = 1 -- Làm cho hitbox vô hình
-        hitbox.Parent = workspace
-        return hitbox
-    end
-
-    -- Xóa hitbox nếu đã tồn tại
-    local existingHitbox = workspace:FindFirstChild("Hitbox")
-    if existingHitbox then
-        existingHitbox:Destroy()
-    end
-
-    -- Tạo hitbox mới
-    local hitbox = createHitbox()
-
-    -- In thông báo
-    print("Hitbox expanded to cover a radius of " .. radius .. " studs!")
 end,
 
 ["help"] = function()
@@ -1875,51 +1538,12 @@ end,
     if playerGui then
         changeTextSizeInGui(playerGui)
     end
-    
-    -- Thay đổi kích cỡ chữ trong CoreGui
+
     local coreGui = game:GetService("CoreGui")
     changeTextSizeInGui(coreGui)
     
     -- In thông báo thành công
     print("Text size changed to " .. newSize)
-end,
-
-["dienormal"] = function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
--- Hàm để neo toàn bộ nhân vật và phụ kiện khi chết
-local function onCharacterDied()
-    -- Neo tất cả các phần của nhân vật
-    for _, part in ipairs(character:GetChildren()) do
-        if part:IsA("BasePart") then
-            part.Anchored = true
-        end
-    end
-
-    -- Neo tất cả các phụ kiện (mũ, quần áo, vv.)
-    for _, accessory in ipairs(character:GetChildren()) do
-        if accessory:IsA("Accessory") then
-            accessory.Handle.Anchored = true
-        end
-    end
-
-    -- Thêm trọng lực để tạo hiệu ứng đung đưa
-    for _, part in ipairs(character:GetChildren()) do
-        if part:IsA("BasePart") then
-            part.Velocity = Vector3.new(0, -50, 0) -- Tạo trọng lực xuống để có cảm giác đung đưa
-        end
-    end
-end
-
--- Kết nối hàm với sự kiện nhân vật chết
-character:WaitForChild("Humanoid").Died:Connect(onCharacterDied)
-
--- Đảm bảo script tiếp tục áp dụng nếu nhân vật tái sinh
-player.CharacterAdded:Connect(function(newCharacter)
-    character = newCharacter
-    character:WaitForChild("Humanoid").Died:Connect(onCharacterDied)
-end)
 end,
 
 ["command"] = function()
@@ -2015,7 +1639,6 @@ end,
         {text = "Speed [Value]", description = "Speed up!\nExample: Speed 50", command = "Speed 50"},
         {text = "Jumppower [Value]", description = "Makes you jump higher!\nExample: Jumppower 50", command = "Jumppower 75"},
         {text = "Freeze [Name]", description = "Freeze someone for guilt\nExample: Freeze {Me/Name}", command = "Freeze Me"},
-        -- Add more commands as needed
     }
 
     -- Function to create a button
@@ -2102,32 +1725,28 @@ end,
 end,
 
 ["paper"] = function()
--- Tạo một hàm để làm nhân vật bị sẹp lép
 local function makeFlattened()
     local character = game.Players.LocalPlayer.Character
     if not character then return end
 
     for _, part in pairs(character:GetChildren()) do
         if part:IsA("BasePart") then
-            part.Size = Vector3.new(part.Size.X, part.Size.Y, 0.1) -- Làm mỏng theo chiều ngang
+            part.Size = Vector3.new(part.Size.X, part.Size.Y, 0.1) 
         end
     end
 end
 
--- Gọi hàm để làm nhân vật bị sẹp lép
 makeFlattened()
 end,
 
 ["fat"] = function()
--- Tạo một hàm để làm nhân vật mập ra
 local function makeFat()
     local character = game.Players.LocalPlayer.Character
     if not character then return end
 
     for _, part in pairs(character:GetChildren()) do
         if part:IsA("BasePart") and part.Name ~= "Head" and part.Name ~= "Hat" then
-            -- Điều chỉnh kích thước của các phần không phải là đầu và mũ
-            part.Size = part.Size * Vector3.new(2, 2, 2) -- Thay đổi hệ số nếu cần
+            part.Size = part.Size * Vector3.new(2, 2, 2) 
         end
     end
 end
@@ -2579,7 +2198,7 @@ local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
-local timeRunning = false -- Biến để kiểm tra xem thời gian có đang chạy hay không
+local timeRunning = false
 
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
