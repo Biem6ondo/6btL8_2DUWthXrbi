@@ -3950,6 +3950,88 @@ if isfile("animationlist.txt") then
     end
 end
 end,
+
+["fly"] = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+-- Gui no dont show again
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MyGUI"
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local Frame = Instance.new("Frame")
+Frame.Name = "MainFrame"
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Position = UDim2.new(0.25, 0, 0.25, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.ClipsDescendants = true
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = Frame
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0.1, 0)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.Text = "Fly v3 (For temporary use)"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.TextStrokeTransparency = 0.8
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = Frame
+CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CloseButton.Text = "❌"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextScaled = true
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.CornerRadius = UDim.new(0, 10)
+UICornerButton.Parent = CloseButton
+
+local InfoLabel = Instance.new("TextLabel")
+InfoLabel.Name = "InfoLabel"
+InfoLabel.Parent = Frame
+InfoLabel.Size = UDim2.new(1, 0, 0.9, 0)
+InfoLabel.Position = UDim2.new(0, 0, 0.1, 0)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.Text = "Sorry, you can use this temporarily."
+InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfoLabel.TextScaled = true
+
+Frame.Position = UDim2.new(0.25, 0, 1, 0)
+Frame:TweenPosition(UDim2.new(0.25, 0, 0.25, 0), "Out", "Quad", 0.5)
+
+local Camera = workspace.CurrentCamera
+local BlurEffect = Instance.new("BlurEffect")
+BlurEffect.Name = "BlurEffect"
+BlurEffect.Size = 50
+BlurEffect.Parent = Camera
+
+CloseButton.MouseButton1Click:Connect(function()
+    Frame:TweenPosition(UDim2.new(0.25, 0, 1, 0), "Out", "Quad", 0.5)
+    for i = 50, 0, -10 do
+        BlurEffect.Size = i
+        wait(0)
+    end
+    BlurEffect:Destroy()
+    wait(0.5)
+    ScreenGui:Destroy()
+end)
+
+Frame.AncestryChanged:Connect(function()
+    if not Frame:IsDescendantOf(ScreenGui) then
+        BlurEffect:Destroy()
+    end
+end)
+end,
 }
 
 -- End Command!
