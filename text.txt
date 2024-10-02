@@ -4234,12 +4234,12 @@ for _, gui in pairs(playerGui:GetChildren()) do
 end
 
 local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local coreGui = game:GetService("CoreGui")
 
 while true do
     local hyCMDsGuis = {}
 
-    for _, gui in pairs(playerGui:GetChildren()) do
+    for _, gui in pairs(coreGui:GetChildren()) do
         if gui:IsA("ScreenGui") and gui.Name:find("HyCMDs") then
             table.insert(hyCMDsGuis, gui)
         end
