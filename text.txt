@@ -12,9 +12,11 @@ local function findAndTransferGui()
             hyCMDsGui.Parent = game:GetService("CoreGui")
 
             for _, element in pairs(hyCMDsGui:GetDescendants()) do
-                if element:IsA("TextBox") or element:IsA("TextButton") then
-                    element.BackgroundTransparency = 0.27
-                    element.TextTransparency = 0.27
+                if element:IsA("Frame") then
+                    element.BackgroundTransparency = 0.27 -- Làm mờ nền của Frame
+                elseif element:IsA("TextBox") or element:IsA("TextButton") or element:IsA("TextLabel") then
+                    element.BackgroundTransparency = 0.27 -- Làm mờ nền của TextBox và TextButton
+                    element.TextTransparency = 0.27 -- Làm mờ chữ
                 end
             end
         end
