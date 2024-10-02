@@ -589,13 +589,6 @@ end,
     end
 end,
 
-["givedevtool"] = function()
-    local player = game.Players.LocalPlayer
-    local devTool = Instance.new("Tool")
-    devTool.Name = "DevTool"
-    devTool.Parent = player.Backpack
-end,
-
 ["noarms"] = function()
     local character = game.Players.LocalPlayer.Character
     if character then
@@ -989,18 +982,6 @@ CY.MouseButton1Click:Connect(function()
 end)
 end,
 
-["invisible"] = function()
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        for _, part in ipairs(character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.Transparency = 1
-                part.CanCollide = false
-            end
-        end
-    end
-end,
-
 ["deletehycmds"] = function()
     local playerGui = game.Players.LocalPlayer:FindFirstChildOfClass("CoreGui")
     if playerGui then
@@ -1151,40 +1132,6 @@ end,
         end
     end
     print("All part is invisible!.")
-end,
-
-["addtools"] = function(name_carryable_display_color)
-    local players = game:GetService("Players")
-    local localPlayer = players.LocalPlayer
-    local backpack = localPlayer:FindFirstChildOfClass("Backpack")
-
-    if backpack then
-        -- Parse the input parameters
-        local split = string.split(name_carryable_display_color, "_")
-        local toolName = split[1]:gsub("#2d", " ")  -- Replace #2d with actual space
-        local carryable = split[2] == "True"
-        local displayPart = split[3] == "True"
-        local color = split[4]
-
-        local tool = Instance.new("Tool")
-        tool.Name = toolName
-        tool.RequiresHandle = carryable
-        tool.CanBeDropped = carryable
-        tool.Parent = backpack
-
-        if displayPart then
-            local handle = Instance.new("Part")
-            handle.Size = Vector3.new(1, 1, 1)
-            handle.Color = BrickColor.new(color).Color
-            handle.Name = "Handle"
-            handle.Parent = tool
-            tool.GripPos = Vector3.new(0, -0.5, 0)
-        end
-
-        print("Created tool: " .. toolName)
-    else
-        print("Can't find inventory.")
-    end
 end,
 
 ["copytools"] = function(target)
@@ -1600,10 +1547,9 @@ end,
     searchBox.TextSize = 14
     searchBox.Parent = mainFrame
 
-    -- Create the Search Button
     local searchButton = Instance.new("TextButton")
     searchButton.Size = UDim2.new(0, 100, 0, 40)
-    searchButton.Position = UDim2.new(1, -120, 0, 10)
+    searchButton.Position = UDim2.new(1, -120, 0, 10) có
     searchButton.Text = "Search"
     searchButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     searchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
