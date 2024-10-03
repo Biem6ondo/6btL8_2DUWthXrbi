@@ -4187,6 +4187,120 @@ end,
         end
     end
 end,
+
+["esp"] = function()
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+
+local function addESP(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    for _, part in pairs(character:GetChildren()) do
+        if part:IsA("BasePart") then
+            local highlight = Instance.new("BoxHandleAdornment")
+            highlight.Adornee = part
+            highlight.Size = part.Size
+            highlight.Color3 = Color3.new(1, 0, 0) -- Màu đỏ cho ESP
+            highlight.Transparency = 0.5
+            highlight.ZIndex = 0
+            highlight.AlwaysOnTop = true
+            highlight.Name = "ESPBox"
+            highlight.Parent = CoreGui
+        end
+    end
+end
+
+local function hidePlayerName(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    humanoid.NameDisplayDistance = 0 -- Ẩn tên người chơi
+    humanoid.HealthDisplayDistance = 0 -- Ẩn thanh máu
+end
+
+local function createBillboard(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+    local head = character:WaitForChild("Head")
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = head
+    billboard.Size = UDim2.new(3, 0, 2, 0)
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Name = "InfoBillboard"
+
+    local background = Instance.new("Frame")
+    background.Parent = billboard
+    background.Size = UDim2.new(1, 0, 1, 0)
+    background.BackgroundColor3 = Color3.new(0, 0, 0) -- Màu đen
+    background.BackgroundTransparency = 0.4 -- Độ mờ 0.4
+
+    local label = Instance.new("TextLabel")
+    label.Parent = background
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.TextStrokeTransparency = 0
+    label.TextScaled = false -- Không tự động điều chỉnh kích thước
+    label.TextSize = 13 -- Kích thước chữ cố định
+
+    billboard.Parent = character
+
+    RunService.RenderStepped:Connect(function()
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+            label.Text = "Name: | Health: " .. math.floor(humanoid.Health) .. " | Stud: " .. math.floor(distance)
+        end
+    end)
+end
+
+local function enableESP(player)
+    addESP(player)
+    createBillboard(player)
+    hidePlayerName(player)
+end
+
+-- Kích hoạt ESP cho tất cả người chơi đã có và người chơi mới vào game
+for _, player in pairs(Players:GetPlayers()) do
+    if player ~= Players.LocalPlayer then
+        enableESP(player)
+    end
+
+    player.CharacterAdded:Connect(function()
+        enableESP(player)
+    end)
+end
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        enableESP(player)
+    end)
+end)
+end,
+
+["unesp"] = function()
+local CoreGui = game:GetService("CoreGui")
+
+local function removeESP()
+    for _, gui in pairs(CoreGui:GetChildren()) do
+        if gui:IsA("BoxHandleAdornment") and gui.Name == "ESPBox" then
+            gui:Destroy()
+        end
+    end
+end
+
+local function removeBillboard()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("InfoBillboard") then
+            player.Character.InfoBillboard:Destroy()
+        end
+    end
+end
+
+removeESP()
+removeBillboard()
+end,
 }
 
 -- End Command!
