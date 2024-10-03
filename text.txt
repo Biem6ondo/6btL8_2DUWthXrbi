@@ -4301,6 +4301,21 @@ end
 removeESP()
 removeBillboard()
 end,
+
+["say"] = function(message)
+    local TextChatService = game:GetService("TextChatService")
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+
+    if TextChatService and TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        local generalChannel = TextChatService:WaitForChild("TextChannels"):FindFirstChild("RBXGeneral")
+        if generalChannel then
+            generalChannel:SendAsync(message)
+        end
+    else
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
+    end
+end,
 }
 
 -- End Command!
