@@ -4316,6 +4316,55 @@ end,
         game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
     end
 end,
+
+["swim"] = function(speed)
+    local speaker = game.Players.LocalPlayer
+    game.Workspace.Gravity = 0
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
+    speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+    
+    if speed == nil then
+        speed = 16
+    end
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+end,
+
+["unswim"] = function()
+    local speaker = game.Players.LocalPlayer
+    game.Workspace.Gravity = 196.2
+
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, true)
+    speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, true)
+
+    speaker.Character.Humanoid.WalkSpeed = 16
+end,
 }
 
 -- End Command!
