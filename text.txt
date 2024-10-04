@@ -4365,6 +4365,66 @@ end,
 
     speaker.Character.Humanoid.WalkSpeed = 16
 end,
+
+["r15"] = function()
+    local avs = game:GetService("AvatarEditorService")
+    avs:PromptSaveAvatar(game.Players.LocalPlayer.Character.Humanoid.HumanoidDescription, Enum.HumanoidRigType.R15)
+    wait(3)
+    local result = avs.PromptSaveAvatarCompleted:Wait()
+    if result == Enum.AvatarPromptResult.Success then
+        local player = game.Players.LocalPlayer
+        local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+        local messageLabel = Instance.new("TextLabel", screenGui)
+        
+        messageLabel.Text = "Reset to apply"
+        messageLabel.Size = UDim2.new(0, 300, 0, 50)
+        messageLabel.Position = UDim2.new(0.5, -150, 0.5, -25)
+        messageLabel.BackgroundTransparency = 1
+        messageLabel.TextColor3 = Color3.new(1, 1, 1)
+        messageLabel.TextScaled = true
+
+        wait(5)
+        screenGui:Destroy()
+    end
+end,
+
+["r6"] = function()
+    local avs = game:GetService("AvatarEditorService")
+    avs:PromptSaveAvatar(game.Players.LocalPlayer.Character.Humanoid.HumanoidDescription, Enum.HumanoidRigType.R6)
+    wait(3)
+    local result = avs.PromptSaveAvatarCompleted:Wait()
+    if result == Enum.AvatarPromptResult.Success then
+        local player = game.Players.LocalPlayer
+        local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+        local messageLabel = Instance.new("TextLabel", screenGui)
+        
+        messageLabel.Text = "Reset to apply"
+        messageLabel.Size = UDim2.new(0, 300, 0, 50)
+        messageLabel.Position = UDim2.new(0.5, -150, 0.5, -25)
+        messageLabel.BackgroundTransparency = 1
+        messageLabel.TextColor3 = Color3.new(1, 1, 1)
+        messageLabel.TextScaled = true
+
+        wait(5)
+        screenGui:Destroy()
+    end
+end,
+
+["fakelag"] = function()
+    FakeLag = true
+
+    repeat
+        wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        wait(0.05)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+        wait(0.05)
+    until FakeLag == false
+end,
+
+["unfakelag"] = function()
+    FakeLag = false
+end,
 }
 
 -- End Command!
