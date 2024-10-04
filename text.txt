@@ -554,10 +554,6 @@ end,
     end
 end,
 
-["say"] = function(message)
-    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
-end,
-
 ["hideguis"] = function()
     local player = game.Players.LocalPlayer
     local playerGui = player:FindFirstChild("PlayerGui")
@@ -589,13 +585,6 @@ end,
             item:Destroy()
         end
     end
-end,
-
-["givedevtool"] = function()
-    local player = game.Players.LocalPlayer
-    local devTool = Instance.new("Tool")
-    devTool.Name = "DevTool"
-    devTool.Parent = player.Backpack
 end,
 
 ["noarms"] = function()
@@ -662,28 +651,10 @@ end,
     workspace.Gravity = tonumber(value) or 196.2 -- Default gravity in Roblox
 end,
 
-["grav"] = function(value)
-    workspace.Gravity = tonumber(value) or 196.2
-end,
-
 ["kick"] = function(reason)
     local player = game.Players.LocalPlayer
     if player then
         player:Kick(reason or "No reason provided.")
-    end
-end,
-
-["voidreset"] = function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-
-    if character then
-        character:SetPrimaryPartCFrame(CFrame.new(0, -200, 0))
-        wait(0.1)
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.Health = 0
-        end
     end
 end,
 
@@ -3968,7 +3939,6 @@ Frame.AncestryChanged:Connect(function()
     end
 end)
 
--- Kiểm tra nếu không hiện lại
 if isfile("animationlist.txt") then
     local value = readfile("animationlist.txt")
     if value == "1" then
